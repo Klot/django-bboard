@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  up-site:
+    image: slavnoveugene/bboard_web
+    command: python manage.py runserver 0.0.0.0:80
+    ports:
+      - "80:80"
+    restart: always
