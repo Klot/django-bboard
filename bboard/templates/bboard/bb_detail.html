@@ -1,0 +1,37 @@
+{% extends "layout/basic.html" %}
+{% load static %}
+
+{% block title %}{{ bb.title }}{% endblock %}
+{% block content %}
+<p>Рубрика: {{ bb.rubric.name }}</p>
+<h2>{{ bb.title }}</h2>
+{% if bb.photo %}
+<img src="{{ bb.photo.url }}" width="400px">
+{% else %}
+<p>Фотография отсутствует.</p>
+{% endif %}
+<p><br></p>
+<p>{{ bb.content }}</p>
+<p><br><br></p>
+<p>Цена: <b>{{ bb.price|default:'Продавец не указал цену' }}</b> руб.</p>
+{% if bb.buser %}
+<p>Разместил: <a href="{% url 'profile_ads_view' pk=bb.pk %}">{{ bb.buser }}</a></p>
+{% else %}
+<p>Разместил: Администратор</p>
+{% endif %}
+<p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
+{% if user.is_authenticated %}
+{% if bb.buser == user.username %}
+<p><a href="{% url 'edit' pk=bb.pk %}">Изменить объявление</a></p>
+<p><a href="{% url 'delete' pk=bb.pk %}">Удалить объявление</a></p>
+{% else %}
+{% if 'bboard.add_bb' in perms %}
+<p><a href="{% url 'edit' pk=bb.pk %}">Изменить объявление</a></p>
+{% endif %}
+{% if 'bboard.del_bb' in perms %}
+<p><a href="{% url 'delete' pk=bb.pk %}">Удалить объявление</a></p>
+{% endif %}
+{% endif %}
+{% endif %}
+{% endblock %}
+    

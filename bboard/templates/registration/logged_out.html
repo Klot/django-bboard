@@ -1,0 +1,18 @@
+{% extends "layout/basic.html" %}
+
+{% block title %}Выход из профиля{% endblock %}
+
+{% block content %}
+<h2>Выход</h2>
+{% if user.is_authenticated %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="hidden" name="next" value="{{ next }}">
+    <input type="submit" value="Выйти">
+</form>
+{% else %}
+<p>Вы не авторизированы.</p>
+{% endif %}
+{% endblock %}
+    

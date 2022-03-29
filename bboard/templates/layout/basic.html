@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Главная{% endblock %} :: Доска объявлений</title>
+    <link rel="stylesheet" type="text/css" href="/static/style1.css">
+</head>
+<body>
+<header>
+    <h1>Объявления</h1>
+</header>
+<nav>
+    <a href="{% url 'index' %}">Главная</a>
+
+    {% if user.is_authenticated %}
+    <a href="{% url 'add' %}">Добавить объявление</a>
+    <a href="{% url 'profile' %}">Мой профиль</a>
+    <a href="{% url 'logout' %}">Выйти из аккаунта</a>
+    <p><br><br></p>
+    {% else %}
+    <a href="{% url 'login' %}">Войти в аккаунт</a>
+    <p><br><br></p>
+    {% endif %}
+    <form action="{% url 'search_ads' %}" method="get">
+        <input name="what" type="text" placeholder="Что ищем?" value="{{ request.GET.title }}">
+        <button type="submit">Поиск объявлений</button>
+    </form>
+    {% for rubric in rubrics %}
+    <a href="{% url 'by_rubric' rubric.pk %}">{{ rubric.name }}</a>
+    {% endfor %}
+</nav>
+<section>
+    {% block content %}
+    {% endblock %}
+</section>
+</body>
+</html>

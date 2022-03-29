@@ -1,0 +1,65 @@
+{% extends "layout/basic.html" %}
+{% load static %}
+
+{% block title %}{{ car.title }}{% endblock %}
+{% block content %}
+<p>Рубрика: {{ car.rubric.name }}</p>
+<h2>{{ car.title }}</h2>
+<h3>{{ car.price|default:'Продавец не указал цену' }} ₽</h3>
+{% with c=car.is_competitive %}
+{% if c == 1 %}
+<p><b style="background-color:#ADFF2F">Хорошая цена</b></p>
+{% elif c == 2 %}
+<p><b style="background-color:#00FF00">Отличная цена</p></b>
+{% elif c == -1 %}
+<p><b style="background-color:#B0E0E6">Цена слегка выше рынка</p></b>
+{% elif c == -2 %}
+<p><b style="background-color:#87CEEB">Цена существенно выше рынка</p></b>
+{% else %}
+{% endif %}
+{% endwith %}
+{% if car.photo %}
+<p><img src="{{ car.photo.url }}" width="400px"></p>
+{% else %}
+<p>Фотография отсутствует.</p>
+{% endif %}
+
+<p>Тип объявления: <b>{{ car.get_kind_display }}</b></p>
+<p>Состояние: {{ car.get_status_display }}</p>
+<p>Марка: {{ car.model.brand }}</p>
+<p>Модель: {{ car.model }}</p>
+<p>Год выпуска: {{ car.year }}</p>
+<p>Пробег: {{ car.mileage }} км.</p>
+<p>ПТС: {{ car.get_pts_display }}</p>
+<p>Собственников в ПТС: {{ car.get_owners_display }}</p>
+<p>Тип кузова: {{ car.get_body_display }}</p>
+<p>Цвет авто: {{ car.get_color_display }}</p>
+<p>Тип двигателя: {{ car.get_engine_type_display }}</p>
+<p>Привод: {{ car.get_drive_display }}</p>
+<p>Комплектация: {{ car.get_equip_display }}</p>
+<p><br></p>
+<p><b>Описание</b></p>
+<p>{{ car.content }}</p>
+<p><br></p>
+<p>Цена: <b>{{ car.price|default:'Продавец не указал цену' }}</b> руб.</p>
+{% if car.buser %}
+<p>Разместил: <a href="{% url 'profile_ads_view' pk=car.pk %}">{{ car.buser }}</a></p>
+{% else %}
+<p>Разместил: Администратор</p>
+{% endif %}
+<p>{{ car.published|date:"d.m.Y H:i:s" }}</p>
+{% if user.is_authenticated %}
+{% if car.buser == user.username %}
+<p><a href="{% url 'car_edit' pk=car.pk %}">Изменить объявление</a></p>
+<p><a href="{% url 'delete' pk=car.pk %}">Удалить объявление</a></p>
+{% else %}
+{% if 'bboard.add_bb' in perms %}
+<p><a href="{% url 'car_edit' pk=car.pk %}">Изменить объявление</a></p>
+{% endif %}
+{% if 'bboard.del_bb' in perms %}
+<p><a href="{% url 'delete' pk=car.pk %}">Удалить объявление</a></p>
+{% endif %}
+{% endif %}
+{% endif %}
+{% endblock %}
+    

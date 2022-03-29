@@ -1,0 +1,21 @@
+{% extends "layout/basic.html" %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+<h2>Вход</h2>
+{% if user.is_authenticated %}
+<p>Вы уже выполнили вход.</p>
+{% else %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="hidden" name="next" value="{{ next }}">
+    <input type="submit" value="Войти">
+
+    <p><br>Нет аккаунта? <a href="{% url 'user_registrate' %}"> Зарегистрируйтесь.</a></p>
+    <p>Забыли пароль? <a href="{% url 'password_reset' %}"> Сброс пароля.</a></p>
+</form>
+{% endif %}
+{% endblock %}
+    

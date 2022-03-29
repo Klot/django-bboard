@@ -1,0 +1,32 @@
+{% extends "layout/basic.html" %}
+
+{% block title %}Поиск{% endblock %}
+
+{% block content %}
+<h2>Результаты поиска: {{ query }} </h2>
+{% if bbs %}
+{% for bb in bbs %}
+<div>
+    <h2><a href="{% url 'detail' pk=bb.pk %}">{{ bb.title }}</a></h2>
+    <p>{{ bb.content }}</p>
+    <b><p>{{ bb.price }} руб.</p></b>
+    <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
+</div>
+{% endfor %}
+{% else %}
+<p><h3>Подходящих объявлений не найдено</h3></p>
+{% endif %}
+{% if bbs2 %}
+<p><br></p>
+<h2>Также могут подойти следующие объявления: {{ 'query' }} </h2>
+{% for bb in bbs2 %}
+<div>
+    <h2><a href="{% url 'detail' pk=bb.pk %}">{{ bb.title }}</a></h2>
+    <p>{{ bb.content }}</p>
+    <b><p>{{ bb.price }} руб.</p></b>
+    <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}
+    

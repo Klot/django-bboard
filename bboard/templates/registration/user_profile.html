@@ -1,0 +1,28 @@
+{% extends "layout/basic.html" %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<h3>Приветствую {{ user.username }}</h3>
+<p><br><br></p>
+<p>Имя пользователя: {{ user.username }} </p>
+<p>Email: {{ user.email }} </p>
+<p>Имя: {{ user.first_name }} </p>
+<p>Фамилия: {{ user.last_name }} </p>
+<p>Дата рождения: {{ user.profile.birth_date }} </p>
+<p>Номер телефона: {{ user.profile.phone_number }} </p>
+<p><a href="{% url 'update_profile' %}">Изменить данные профиля</a></p>
+<p><br><br></p>
+<p><a href="{% url 'by_logged_user' %}">Мои объявления</a></p>
+<p><br><br></p>
+<p><a href="{% url 'password_change' %}">Сменить пароль</a></p>
+
+
+{% else %}
+<p>Вы не выполнили вход.</p>
+<a href="{% url 'login' %}">Войдите в свой аккаунт</a>
+{% endif %}
+{% endblock %}
+    

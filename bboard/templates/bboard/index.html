@@ -1,0 +1,40 @@
+{% extends "layout/basic.html" %}
+
+{% block content %}
+
+{% if bbs %}
+{% for bb in bbs %}
+<div>
+    {% if bb.rubric.name == 'Авто' %}
+    <h2><a href="{% url 'detail_car' pk=bb.pk %}">{{ bb.title }}</a></h2>
+    {% else %}
+    <h2><a href="{% url 'detail' pk=bb.pk %}">{{ bb.title }}</a></h2>
+    {% endif %}
+    <p><a href="{% url 'by_rubric' bb.rubric.pk %}">{{ bb.rubric.name }}</a></p>
+    <p>{{ bb.content }}</p>
+    <b><p>{{ bb.price }} руб.</p></b>
+    <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
+
+
+</div>
+{% endfor %}
+<div>
+
+    {% if page.has_previous %}
+    <a href="?page={{ page.previous_page_number }}">&lt;</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    {% endif %}
+
+    Часть №{{ page.number }} из {{ page.paginator.num_pages }}
+
+    {% if page.has_next %}
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="?page={{ page.next_page_number }}">&gt;</a>
+    {% endif %}
+</div>
+
+{% else %}
+<p>Тут пока еще нет объявлений.</p>
+{% endif %}
+
+{% endblock %}
